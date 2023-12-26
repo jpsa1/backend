@@ -6,25 +6,39 @@ class ProductManager {
 
     constructor() {
         
-        console.log('resultado:')
-
         this.path = "./bd.json"
-        this.productos = async () => {
-            let data = await fs.promises.readFile(this.path, 'utf-8')
-            data = JSON.parse(data)
-            console.log('resultado de data:')
-            console.log(data)
-            return  data || []
-        }
+        this.productos = this.leerProductos()
     }
 
     #id = 0
 
+    async leerProductos() {
+        try {
+            const data = await fs.promises.readFile(this.path, 'utf-8');
+            // console.log(JSON.parse(data))
+            
+            return JSON.parse(data) || []
+        } catch (error) {
+            // Manejo de errores en la lectura del archivo
+            console.error('ERROR: Al leer el archivo:', error);
+            return [];
+        }
+    }
+
+    async writeProducts() {
+        try {
+            await fs.promises.writeFile(this.path, JSON.stringify(this.productos, null, 2));
+        } catch (error) {
+            // Manejo de errores en la escritura del archivo
+            console.error('Error al escribir en el archivo:', error);
+        }
+    }
+    
     getProducts() {
         return this.productos
     }
 
-    addProduct(title, description, price, thumbail, code, stock) {
+    async addProduct(title, description, price, thumbail, code, stock) {
         //Controlar que el producto no este repetido
         if (this.productos.find(n => n.code === code)) return 'ERROR: Producto repetido'
         
@@ -44,7 +58,7 @@ class ProductManager {
         this.#id++
         this.productos.push(producto)
 
-        fs.promises.writeFile(this.path, JSON.stringify(producto))
+        await this.writeProducts(); // Esperar a que se complete la escritura antes de retornar
 
         return "Producto agregado exitosamente"
     }
