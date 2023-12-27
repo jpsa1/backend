@@ -1,1 +1,1 @@
-{"id":2,"title":"producto prueba3","description":"Este es un producto prueba3","price":400,"thumbail":"Sin imagen3","code":"abc125","stock":100}
+[{"id":0,"title":"producto prueba","description":"Este es un producto prueba","price":200,"thumbail":"Sin imagen","code":"abc123","stock":25},{"id":2,"title":"producto prueba3","description":"Este es un producto prueba3","price":200,"thumbail":"Sin imagen3","code":"abc125","stock":50},{"id":1,"title":"producto prueba8","description":"Este es un producto prueba8","price":200,"thumbail":"Sin imagen8","code":"abc124","stock":80}]
