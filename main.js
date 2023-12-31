@@ -87,6 +87,15 @@ class ProductManager {
         console.log("Producto actualizado correctamente")
     
     }
+
+    async deleteProduct(getId) {
+        this.productos = await this.readProducts()
+        this.productos = this.productos.filter(n => n !== getId)
+
+        await fs.writeFile(this.path, JSON.stringify(this.productos))
+
+        console.log('Producto eliminado!')
+    }
 }
 
 
@@ -111,6 +120,9 @@ administrador.getProducts()
 
 //Faltan datos para ingresar el nuevo producto
 // administrador.addProduct("producto prueba5", "", 500, "Sin imagen5","", 500)
+
+//Eliminar un producto por Id
+administrador.deleteProduct(1)
 
 
 
