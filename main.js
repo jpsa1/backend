@@ -5,7 +5,6 @@ class ProductManager {
     constructor() {
         this.path = "./bd.json"
         this.productos = []
-        
     }
     
     #id = 0
@@ -61,20 +60,12 @@ class ProductManager {
         return (this.productos.find(n => n.id == getId) || "ERROR: Not found")
     }
 
-    async updateProduct(getId, title, description, price, thumbail, code, stock) {
-        let updatePro = await this.getProductById(getId)
+    async updateProduct(getId, updatePro) {
+        let productOld = await this.getProductById(getId)
 
-        if(typeof updatePro !== "object") return console.log(updatePro)
+        if(typeof productOld !== "object") return console.log(updatePro)
 
-        updatePro = {
-            "id": getId,
-            title, 
-            description, 
-            price, 
-            thumbail, 
-            code, 
-            stock
-        }
+        updatePro = {...productOld, ...updatePro}
 
         this.productos = await this.readProducts()
 
@@ -90,7 +81,7 @@ class ProductManager {
 
     async deleteProduct(getId) {
         this.productos = await this.readProducts()
-        this.productos = this.productos.filter(n => n !== getId)
+        this.productos = this.productos.filter(n => n.id !== getId)
 
         await fs.writeFile(this.path, JSON.stringify(this.productos))
 
@@ -106,7 +97,7 @@ const administrador = new ProductManager
 administrador.getProducts()
 
 //✓	Se llama al método “addProduct” con los campos detallados
-// administrador.addProduct("producto prueba", "Este es un producto prueba", 200, "Sin imagen", "abc123", 25)
+// administrador.addProduct("producto prueba", "Este es un producto prueba", 200, "Sin imagen", "abc129", 25)
 
 //Se agregan 2 productos mas
 // administrador.addProduct("producto prueba2", "Este es un producto prueba2", 200, "Sin imagen2", "abc124", 40)
@@ -116,13 +107,13 @@ administrador.getProducts()
 // administrador.getProductById(0).then(resolve => console.log(resolve))
 
 //Update de producto
-// administrador.updateProduct(1,"producto prueba8", "Este es un producto prueba8", 200, "Sin imagen8", "abc124", 80)
+administrador.updateProduct(0,{description: 'Descripcion actualizada', price: 700 })
 
 //Faltan datos para ingresar el nuevo producto
 // administrador.addProduct("producto prueba5", "", 500, "Sin imagen5","", 500)
 
 //Eliminar un producto por Id
-administrador.deleteProduct(1)
+// administrador.deleteProduct(1)
 
 
 
